@@ -7,44 +7,57 @@ const box = document.querySelector(".box");
 const column = document.querySelector(".column");
 column.innerHTML = `<div class=box></div>`.repeat(sizeVal);
 container.innerHTML = container.innerHTML.repeat(sizeVal);
-let interval;
+let hoverNum = 1;
 
-let darkenColor = (hex, amount) => {
-    let num = parsenInt(hex, 16);
-    let r = Math.max((num >> 16) - amount, 0);
-    let g = Math.max(((num >> 8) & Ox00FF )- amount, 0);
-    let b = Math.max((num & 0x0000FF) - amount, 0);
-    return `#${(r << 16 | g << 8 | b).toString(16)}`
-}
+let darkenColor = (rgb, percentage) => {
+  let [r, g, b] = rgb.match(/\d+/g).map(Number);
+
+  r = Math.max(r - Math.floor(r * (percentage / 100)), 0);
+  g = Math.max(g - Math.floor(g * (percentage / 100)), 0);
+  b = Math.max(b - Math.floor(b * (percentage / 100)), 0);
+
+  return `rgb(${r}, ${g}, ${b})`;
+};
 
 changeBtn.addEventListener("click", () => {
   if (size.value >= 16 && size.value <= 100) {
     sizeVal = size.value;
-    container.innerHTML = `<div class="column"></div>`
-    document.querySelector(".column").innerHTML = `<div class=box></div>`.repeat(sizeVal); // create columns
+    container.innerHTML = `<div class="column"></div>`;
+    document.querySelector(".column").innerHTML =
+      `<div class=box></div>`.repeat(sizeVal); // create columns
     container.innerHTML = container.innerHTML.repeat(sizeVal); // create rows
-    document.querySelectorAll(".box").forEach(box => {
-        let randomColor = Math.floor(Math.random() * 16777215).toString(16).padStart(6,'0');
+    document.querySelectorAll(".box").forEach((box) => {
         box.addEventListener("mouseenter", (e) => {
-            e.target.style.backgroundColor = `#${randomColor}`
+          if (!e.target.style.backgroundColor) {
+              let initialColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+              e.target.style.backgroundColor = initialColor;
+              console.log(`this is initial color ${initialColor}`);
+          } else {
+              let currentColor = e.target.style.backgroundColor;
+              let darkenedColor = darkenColor(currentColor, 15);
+              e.target.style.backgroundColor = darkenedColor;
+              console.log(`hover number ${hoverNum}, color value is ${darkenedColor}`);
+              hoverNum+=1;
+          }
         });
-        interval = setInterval(()=>{
-            randomColor = darkenColor(randomColor, 15);
-            box.style.backgroundColor = randomColor;
-        }, 1000)
-    });
+      });
   } else {
     alert("Value must be between 16 and 100");
   }
 });
 
-document.querySelectorAll(".box").forEach(box => {
-    let randomColor = Math.floor(Math.random() * 16777215).toString(16).padStart(6,'0');
-    box.addEventListener("mouseenter", (e) => {
-        e.target.style.backgroundColor = `#${randomColor}`
-    });
+document.querySelectorAll(".box").forEach((box) => {
+  box.addEventListener("mouseenter", (e) => {
+    if (!e.target.style.backgroundColor) {
+        let initialColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+        e.target.style.backgroundColor = initialColor;
+        console.log(`this is initial color ${initialColor}`);
+    } else {
+        let currentColor = e.target.style.backgroundColor;
+        let darkenedColor = darkenColor(currentColor, 15);
+        e.target.style.backgroundColor = darkenedColor;
+        console.log(`hover number ${hoverNum}, color value is ${darkenedColor}`);
+        hoverNum+=1;
+    }
+  });
 });
-
-container.addEventListener("mouseleave", (e) => {
-    clearInterval(interval);
-})
