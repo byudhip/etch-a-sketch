@@ -3,7 +3,6 @@ const size = document.querySelector(".size");
 let sizeVal = 16;
 const changeBtn = document.querySelector(".change-button");
 const container = document.querySelector(".container");
-const box = document.querySelector(".box");
 const column = document.querySelector(".column");
 column.innerHTML = `<div class=box></div>`.repeat(sizeVal);
 container.innerHTML = container.innerHTML.repeat(sizeVal);
@@ -27,20 +26,26 @@ changeBtn.addEventListener("click", () => {
       `<div class=box></div>`.repeat(sizeVal); // create columns
     container.innerHTML = container.innerHTML.repeat(sizeVal); // create rows
     document.querySelectorAll(".box").forEach((box) => {
-        box.addEventListener("mouseenter", (e) => {
-          if (!e.target.style.backgroundColor) {
-              let initialColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
-              e.target.style.backgroundColor = initialColor;
-              console.log(`this is initial color ${initialColor}`);
-          } else {
-              let currentColor = e.target.style.backgroundColor;
-              let darkenedColor = darkenColor(currentColor, 15);
-              e.target.style.backgroundColor = darkenedColor;
-              console.log(`hover number ${hoverNum}, color value is ${darkenedColor}`);
-              hoverNum+=1;
-          }
-        });
+      box.addEventListener("mouseenter", (e) => {
+        if (!e.target.style.backgroundColor) {
+          let initialColor = `rgb(${Math.floor(
+            Math.random() * 256
+          )}, ${Math.floor(Math.random() * 256)}, ${Math.floor(
+            Math.random() * 256
+          )})`;
+          e.target.style.backgroundColor = initialColor;
+          console.log(`this is initial color ${initialColor}`);
+        } else {
+          let currentColor = e.target.style.backgroundColor;
+          let darkenedColor = darkenColor(currentColor, 15);
+          e.target.style.backgroundColor = darkenedColor;
+          console.log(
+            `hover number ${hoverNum}, color value is ${darkenedColor}`
+          );
+          hoverNum += 1;
+        }
       });
+    });
   } else {
     alert("Value must be between 16 and 100");
   }
@@ -49,15 +54,17 @@ changeBtn.addEventListener("click", () => {
 document.querySelectorAll(".box").forEach((box) => {
   box.addEventListener("mouseenter", (e) => {
     if (!e.target.style.backgroundColor) {
-        let initialColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
-        e.target.style.backgroundColor = initialColor;
-        console.log(`this is initial color ${initialColor}`);
+      let initialColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(
+        Math.random() * 256
+      )}, ${Math.floor(Math.random() * 256)})`;
+      e.target.style.backgroundColor = initialColor;
+      console.log(`this is initial color ${initialColor}`);
     } else {
-        let currentColor = e.target.style.backgroundColor;
-        let darkenedColor = darkenColor(currentColor, 15);
-        e.target.style.backgroundColor = darkenedColor;
-        console.log(`hover number ${hoverNum}, color value is ${darkenedColor}`);
-        hoverNum+=1;
+      let currentColor = e.target.style.backgroundColor;
+      let darkenedColor = darkenColor(currentColor, 15);
+      e.target.style.backgroundColor = darkenedColor;
+      console.log(`hover number ${hoverNum}, color value is ${darkenedColor}`);
+      hoverNum += 1;
     }
   });
 });
